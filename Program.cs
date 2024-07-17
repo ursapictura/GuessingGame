@@ -4,11 +4,46 @@
 
 Console.WriteLine(@"Can you guess the secret number?
 It's a number between 1 - 100.
-Enter your guess!
+What level of difficulty to do you want play at?
+Easy: 8 guesses
+Medium: 6 guesses
+Hard: 4 guesses
+Cheater: infinite guesses
 ");
 
-int guess;
+int difficulty;
+while (true)
+{
+    string chosenDifficulty= Console.ReadLine();
 
+    if (chosenDifficulty.ToLower() == "easy")
+    {
+        difficulty = 8;
+        break;
+    }
+    else if (chosenDifficulty.ToLower() == "medium") 
+    {
+        difficulty = 6;
+        break;
+    }
+    else if (chosenDifficulty.ToLower() == "hard") 
+    {
+        difficulty = 4;
+        break;
+    }
+    else if (chosenDifficulty.ToLower() == "cheater") 
+    {
+        difficulty = 10;
+        break;
+    }
+    else{
+        Console.WriteLine("Sorry, but your entry was not valid. Please select a level of difficulty: easy, medium, hard, or cheater.");
+    }
+}
+
+Console.WriteLine("Ready to guess the secret number? Give it your best shot!");
+
+int guess;
 void Guess()
 {
  while(true)
@@ -31,39 +66,29 @@ Random randomNum = new Random();
 int secretNumber = randomNum.Next(1, 101);
 
 int round = 0;
-int remainingGuesses = 4 ;
-while (round != 4)
+int remainingGuesses = difficulty;
+while (round != difficulty)
 {
     Guess();
     if (guess == secretNumber)
     {
-        Console.WriteLine(@"
-Congratulations!
-You guessed the secret number!
-Are you psychic?
-That was an amazing guess!
-");
-        round = 4;
+        Console.WriteLine(@"Congratulations! You guessed the secret number! Are you psychic? That was an amazing guess!");
+        round = difficulty;
     }
-    else
+    else if (difficulty < 10)
     {
         round += 1;
         remainingGuesses -= 1;
         if (remainingGuesses > 0)
         {
-        Console.WriteLine(@$"
-Oh no!
-You guessed wrong.
-You have {remainingGuesses} left!
-");
+        Console.WriteLine(@$"You guessed {(guess < secretNumber ? "too low!" : "too high!")} You have {remainingGuesses} left!");
         }
         else
         { 
-            Console.WriteLine(@"
-Wah Wah Waaahhhh.
-You're REALLY bad at this game.
-YOU LOST!
-");
+            Console.WriteLine($"Wah Wah Waaahhhh. You're REALLY bad at this game. YOU LOST! The secretNumber was {secretNumber}");
         }
+    }
+    else{
+        Console.WriteLine(@$"You guessed {(guess < secretNumber ? "too low!" : "too high!")}");
     }
 }
